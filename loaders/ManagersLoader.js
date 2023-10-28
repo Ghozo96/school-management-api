@@ -62,7 +62,7 @@ module.exports = class ManagersLoader {
 
     load() {
         this.managers.responseDispatcher  = new ResponseDispatcher();
-        this.managers.liveDb              = new LiveDB(this.injectable);
+        // this.managers.liveDb              = new LiveDB(this.injectable);
         const middlewaresLoader           = new MiddlewaresLoader(this.injectable);
         const mwsRepo                     = middlewaresLoader.load();
         const { layers, actions }         = systemArch;
