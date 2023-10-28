@@ -21,6 +21,7 @@ module.exports = {
         path: 'email',
         type: 'string',
         length: {min:3, max: 100},
+        regex: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
     },
     title: {
         path: 'title',
@@ -81,10 +82,6 @@ module.exports = {
         type: 'String',
         length: 13,
     },
-    email: {
-        type: 'String',
-        regex: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-    },
     number: {
         type: 'Number',
         length: {min: 1, max:6},
@@ -101,5 +98,43 @@ module.exports = {
     },
     bool: {
         type: 'Boolean',
+    },
+    name: {
+        path: "name",
+        type: "String",
+        length: { min: 3, max: 50 },
+    },
+    address: {
+        path: "address",
+        type: "String",
+        length: { min: 5, max: 300 },
+    },
+    admins: {
+        path: 'admins',
+        type: 'Array',
+        items: {
+            type: 'String',
+            length: {min: 1}
+        }
+    },
+    school: {
+        path: 'school',
+        type: 'String'
+    },
+    gender: {
+        path: 'gender',
+        type: 'String'
+    },
+    age: {
+        path: 'age',
+        type: 'Number'
+    },
+    gpa: {
+        path: 'gpa',
+        type: 'Number'
+    },
+    classroom: {
+        path: 'classroom',
+        type: 'String'
     },
 }

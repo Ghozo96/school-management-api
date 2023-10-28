@@ -1,4 +1,9 @@
 const MiddlewaresLoader     = require('./MiddlewaresLoader');
+const MongoLoader = require('./MongoLoader')
+const User = require("../managers/entities/user/User.manager")
+const School = require("../managers/entities/school/School.manager")
+const Classroom = require("../managers/entities/classroom/Classroom.manager")
+const Student = require("../managers/entities/student/Student.manager")
 const ApiHandler            = require("../managers/api/Api.manager");
 const LiveDB                = require('../managers/live_db/LiveDb.manager');
 const UserServer            = require('../managers/http/UserServer.manager');
@@ -35,7 +40,7 @@ module.exports = class ManagersLoader {
             aeon,
             managers: this.managers, 
             validators: this.validators,
-            // mongomodels: this.mongomodels,
+            mongomodels: this.mongomodels,
             resourceNodes: this.resourceNodes,
         };
         
@@ -47,11 +52,11 @@ module.exports = class ManagersLoader {
             customValidators: require('../managers/_common/schema.validators'),
         });
         const resourceMeshLoader  = new ResourceMeshLoader({})
-        // const mongoLoader      = new MongoLoader({ schemaExtension: "mongoModel.js" });
+        const mongoLoader      = new MongoLoader({ schemaExtension: "mongoModel.js" });
 
         this.validators           = validatorsLoader.load();
         this.resourceNodes        = resourceMeshLoader.load();
-        // this.mongomodels          = mongoLoader.load();
+        this.mongomodels          = mongoLoader.load();
 
     }
 
@@ -66,6 +71,11 @@ module.exports = class ManagersLoader {
         this.managers.shark               = new SharkFin({ ...this.injectable, layers, actions });
         this.managers.timeMachine         = new TimeMachine(this.injectable);
         this.managers.token               = new TokenManager(this.injectable);
+        /********************************************ENTITIES*********************************************/
+        this.managers.user = new User({ ...this.injectable })
+        this.managers.school = new School({ ...this.injectable })
+        this.managers.classroom = new Classroom({ ...this.injectable })
+        this.managers.student = new Student({ ...this.injectable })
         /*************************************************************************************************/
         this.managers.mwsExec             = new VirtualStack({ ...{ preStack: [/* '__token', */'__device',] }, ...this.injectable });
         this.managers.userApi             = new ApiHandler({...this.injectable,...{prop:'httpExposed'}});
@@ -73,7 +83,7 @@ module.exports = class ManagersLoader {
 
        
         return this.managers;
-
+        
     }
 
 }
