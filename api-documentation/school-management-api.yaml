@@ -1,0 +1,887 @@
+openapi: 3.0.3
+info:
+  title: School Management API
+  description: CRUD operations for School, Classroom and Student
+  version: 1.0.0
+servers:
+  - url: https://school-management-api-2.onrender.com/api
+tags:
+  - name: User
+    description: The methods to create, read and authenticate Users.
+  - name: School
+    description: The methods to create, read, update and delete Schools.
+  - name: Classroom
+    description: The methods to create, read, update and delete Classrooms.
+  - name: Student
+    description: The methods to create, read, update and delete Students.
+paths:
+    /user/create:
+      post:
+        tags:
+          - User
+        summary: Create User
+        description: |-
+          Create a school admin user.
+        operationId: createUser
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/userWrite'
+              examples:
+                userWriteExample:
+                  $ref: '#/components/examples/userWriteExample'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/userRead'
+                examples:
+                  userReadExample:
+                    $ref: '#/components/examples/userReadExample'
+    /user/authenticate:
+      post:
+        tags:
+          - User
+        summary: Authenticate
+        description: |-
+          Authenticate a created user.
+        operationId: authenticateUser
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authenticate'
+              examples:
+                authenticateExample:
+                  $ref: '#/components/examples/authenticateExample'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/accessToken'
+    /user/list:
+      get:
+        tags:
+          - User
+        summary: List Users
+        description: |-
+          List superadmin and schooladmin users.
+        operationId: listUsers
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/userList'
+                examples:
+                  userListExample:
+                    $ref: '#/components/examples/userListExample'
+    /school/create:
+      post:
+        tags:
+          - School
+        summary: Create School
+        description: |-
+          Create a school.
+        operationId: createSchool
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/schoolWrite'
+              examples:
+                schoolWriteExample:
+                  $ref: '#/components/examples/schoolWriteExample'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/schoolRead'
+                examples:
+                  schoolReadExample:
+                    $ref: '#/components/examples/schoolReadExample'
+    /school/update:
+      put:
+        tags:
+          - School
+        summary: Update School
+        description: |-
+          Update a school.
+        operationId: updateSchool
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: id
+            description: School ID
+            in: header
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/schoolWrite'
+              examples:
+                schoolWriteExample:
+                  $ref: '#/components/examples/schoolWriteExample'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/schoolRead'
+                examples:
+                  schoolReadExample:
+                    $ref: '#/components/examples/schoolReadExample'
+    /school/list:
+      get:
+        tags:
+          - School
+        summary: List Schools
+        description: |-
+          List all schools.
+        operationId: listSchools
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/schoolList'
+                examples:
+                  schoolListExample:
+                    $ref: '#/components/examples/schoolListExample'
+    /school/getOne:
+      get:
+        tags:
+          - School
+        summary: Get School
+        description: |-
+          Get a school.
+        operationId: getSchool
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: id
+            description: School ID
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/schoolRead'
+                examples:
+                  schoolReadExample:
+                    $ref: '#/components/examples/schoolReadExample'
+    /school/delete:
+      delete:
+        tags:
+          - School
+        summary: Delete School
+        description: |-
+          Delete a school.
+        operationId: deleteSchool
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: id
+            description: School ID
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+    /classroom/create:
+      post:
+        tags:
+          - Classroom
+        summary: Create Classroom
+        description: |-
+          Create a classroom.
+        operationId: createClassroom
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: schoolid
+            description: School ID
+            in: header
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/classroomCreate'
+              examples:
+                classroomCreateExample:
+                  $ref: '#/components/examples/classroomCreateExample'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/classroomRead'
+                examples:
+                  classroomReadExample:
+                    $ref: '#/components/examples/classroomReadExample'
+    /classroom/update:
+      put:
+        tags:
+          - Classroom
+        summary: Update Classroom
+        description: |-
+          Update a classroom.
+        operationId: updateClassroom
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: id
+            description: Classroom ID
+            in: header
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/classroomUpdate'
+              examples:
+                classroomUpdateExample:
+                  $ref: '#/components/examples/classroomUpdateExample'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/classroomRead'
+                examples:
+                  classroomReadExample:
+                    $ref: '#/components/examples/classroomReadExample'
+    /classroom/list:
+      get:
+        tags:
+          - Classroom
+        summary: List Classrooms
+        description: |-
+          List all classrooms.
+        operationId: listClassrooms
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: schoolid
+            description: School ID
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/classroomList'
+                examples:
+                  classroomListExample:
+                    $ref: '#/components/examples/classroomListExample'
+    /classroom/getOne:
+      get:
+        tags:
+          - Classroom
+        summary: Get Classroom
+        description: |-
+          Get a classroom.
+        operationId: getClassroom
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: id
+            description: Classroom ID
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/classroomRead'
+                examples:
+                  classroomReadExample:
+                    $ref: '#/components/examples/classroomReadExample'
+    /classroom/delete:
+      delete:
+        tags:
+          - Classroom
+        summary: Delete Classroom
+        description: |-
+          Delete a classroom.
+        operationId: deleteClassroom
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: id
+            description: Classroom ID
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+    /student/create:
+      post:
+        tags:
+          - Student
+        summary: Create Student
+        description: |-
+          Create a student.
+        operationId: createStudent
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: classroomid
+            description: Classroom ID
+            in: header
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/studentCreate'
+              examples:
+                studentCreateExample:
+                  $ref: '#/components/examples/studentCreateExample'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/studentRead'
+                examples:
+                  studentReadExample:
+                    $ref: '#/components/examples/studentReadExample'
+    /student/update:
+      put:
+        tags:
+          - Student
+        summary: Update Student
+        description: |-
+          Update a student.
+        operationId: updateStudent
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: id
+            description: Student ID
+            in: header
+            required: true
+            schema:
+              type: string
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/studentUpdate'
+              examples:
+                studentUpdateExample:
+                  $ref: '#/components/examples/studentUpdateExample'
+          required: true
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/studentRead'
+                examples:
+                  studentReadExample:
+                    $ref: '#/components/examples/studentReadExample'
+    /student/list:
+      get:
+        tags:
+          - Student
+        summary: List Students
+        description: |-
+          List all students.
+        operationId: listStudents
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: classroomid
+            description: Classroom ID
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/studentList'
+                examples:
+                  studentListExample:
+                    $ref: '#/components/examples/studentListExample'
+    /student/getOne:
+      get:
+        tags:
+          - Student
+        summary: Get Student
+        description: |-
+          Get a student.
+        operationId: getStudent
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: id
+            description: Student ID
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/studentRead'
+                examples:
+                  studentReadExample:
+                    $ref: '#/components/examples/studentReadExample'
+    /student/delete:
+      delete:
+        tags:
+          - Student
+        summary: Delete Student
+        description: |-
+          Delete a student.
+        operationId: deleteStudent
+        parameters:
+          - name: token
+            description: Access token
+            in: header
+            required: true
+            schema:
+              type: string
+          - name: id
+            description: Student ID
+            in: header
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Successful operation
+components:
+  schemas:
+    userWrite:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    userRead:
+      type: object
+      required:
+        - user
+      properties:
+        user:
+          $ref: '#/components/schemas/user'
+    userList:
+      type: object
+      required:
+        - users
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/user'
+    user:
+      type: object
+      required:
+        - username
+        - email
+        - role
+        - _id
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: '#/components/schemas/role'
+        _id:
+          type: string
+    role:
+      type: string
+      enum:
+        - SuperAdmin
+        - SchoolAdmin
+    authenticate:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    accessToken:
+      type: object
+      required:
+        - accessToken
+      properties:
+        accessToken:
+          type: string
+    schoolRead:
+      type: object
+      required:
+        - school
+      properties:
+        school:
+          $ref: '#/components/schemas/school'
+    schoolList:
+      type: object
+      required:
+        - schools
+      properties:
+        schools:
+          type: array
+          items:
+            $ref: '#/components/schemas/school'
+    school:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          type: string
+      allOf:
+        - $ref: '#/components/schemas/schoolWrite'
+    schoolWrite:
+      type: object
+      required:
+        - name
+        - address
+        - admins
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        admins:
+          type: array
+          items:
+            type: string
+    classroomRead:
+      type: object
+      required:
+        - classroom
+      properties:
+        classroom:
+          $ref: '#/components/schemas/classroom'
+    classroomList:
+      type: object
+      required:
+        - classrooms
+      properties:
+        classrooms:
+          type: array
+          items:
+            $ref: '#/components/schemas/classroom'
+    classroom:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          type: string
+      allOf:
+        - $ref: '#/components/schemas/classroomUpdate'
+    classroomUpdate:
+      type: object
+      required:
+        - school
+      properties:
+        school:
+          type: string
+      allOf:
+        - $ref: '#/components/schemas/classroomCreate'
+    classroomCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+    studentRead:
+      type: object
+      required:
+        - student
+      properties:
+        student:
+          $ref: '#/components/schemas/student'
+    studentList:
+      type: object
+      required:
+        - students
+      properties:
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/student'
+    student:
+      type: object
+      required:
+        - _id
+      properties:
+        _id:
+          type: string
+      allOf:
+        - $ref: '#/components/schemas/studentUpdate'
+    studentUpdate:
+      type: object
+      required:
+        - classroom
+      properties:
+        classroom:
+          type: string
+      allOf:
+        - $ref: '#/components/schemas/studentCreate'
+    studentCreate:
+      type: object
+      required:
+        - name
+        - gender
+        - age
+        - gpa
+      properties:
+        name:
+          type: string
+        gender:
+          $ref: '#/components/schemas/gender'
+        age:
+          type: number
+        gpa:
+          type: number  
+    gender:
+      type: string
+      enum:
+        - Male
+        - Female
+  examples:
+    userWriteExample:
+      value:
+        username: marwanghazala
+        email: ghazalamarwan@gmail.com
+        password: 12345678
+    userReadExample:
+      value:
+        user:
+          _id: 653d645bb0ad5855652ca13c
+          username: marwanghazala
+          email: ghazalamarwan@gmail.com
+          role: SchoolAdmin
+    userListExample:
+      value:
+        users:
+          - _id: 653d645bb0ad5855652ca13c
+            username: marwanghazala
+            email: ghazalamarwan@gmail.com
+            role: SchoolAdmin
+    authenticateExample:
+      value:
+        username: marwanghazala
+        password: 12345678
+    schoolReadExample:
+      value:
+        school:
+          _id: 653d645bb0ad5855652ca13c
+          name: GEMS
+          address: Smouha, Alexandria
+          admins:
+            - 653cf967b16c2f399bdceb45
+    schoolListExample:
+      value:
+        schools:
+          - _id: 653d645bb0ad5855652ca13c
+            name: GEMS
+            address: Smouha, Alexandria
+            admins:
+              - 653cf967b16c2f399bdceb45
+    schoolWriteExample:
+      value:
+        name: GEMS
+        address: Smouha, Alexandria
+        admins:
+          - 653cf967b16c2f399bdceb45
+    classroomReadExample:
+      value:
+        classroom:
+          _id: 653cff64916bae75bf4ecd71
+          name: Gold
+          school: 653cfbc2b16c2f399bdceb5a
+    classroomListExample:
+      value:
+        classrooms:
+          - _id: 653cff64916bae75bf4ecd71
+            name: Gold
+            school: 653cfbc2b16c2f399bdceb5a
+    classroomUpdateExample:
+      value:
+        name: Gold
+        school: 653cfbc2b16c2f399bdceb5a
+    classroomCreateExample:
+      value:
+        name: Gold
+    studentReadExample:
+      value:
+        student:
+          _id: 653d011c916bae75bf4ecd90
+          name: Tarek Backly
+          gender: Male
+          age: 24
+          gpa: 3.5
+          classroom: 653cff64916bae75bf4ecd71
+    studentListExample:
+      value:
+        students:
+          - _id: 653d011c916bae75bf4ecd90
+            name: Tarek Backly
+            gender: Male
+            age: 24
+            gpa: 3.5
+            classroom: 653cff64916bae75bf4ecd71
+    studentUpdateExample:
+      value:
+        name: Tarek Backly
+        gender: Male
+        age: 24
+        gpa: 3.5
+        classroom: 653cff64916bae75bf4ecd71
+    studentCreateExample:
+      value:
+        name: Tarek Backly
+        gender: Male
+        age: 24
+        gpa: 3.5
