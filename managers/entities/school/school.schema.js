@@ -1,30 +1,30 @@
-
-
 module.exports = {
     create: [
         {
-            model: 'username',
+            model: 'name',
             required: true,
         },
         {
-            model: 'email',
+            model: 'address',
             required: true
         },
         {
-            model: 'password',
+            model: 'admins',
             required: true
         }
     ],
-    authenticate: [
+    update: [
         {
-            model: 'username',
+            model: 'name',
             required: true,
         },
         {
-            model: 'password',
+            model: 'address',
+            required: true
+        },
+        {
+            model: 'admins',
             required: true
         }
-    ],
+    ]
 }
-
-
